@@ -9,6 +9,12 @@ let strUtil = new ChcUtils.StringUtil();
 
 initBtn();
 
+//换肤
+window.setSkin = function (theme,__this) {
+    $(__this).addClass('select_skin').siblings().removeClass('select_skin');
+    window.document.documentElement.setAttribute('data-theme', theme);
+}
+
 function initBtn() {
     $('#zhuanBtn').on('click', zhuanhuan);
 
@@ -230,7 +236,7 @@ function getStr(__type, __val) {
             arr = __val.split('\n');
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] == "") continue;
-                let temp = "<p><strong>" + arr[i] + "</strong></p><br>";
+                let temp = "<p class='p'><strong>" + arr[i] + "</strong></p><br>";
                 arr[i] = temp;
             }
             str = arr.join("");
@@ -241,7 +247,7 @@ function getStr(__type, __val) {
             arr = __val.split('\n');
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] == "") continue;
-                let temp = "<p>" + arr[i] + "</p><br>";
+                let temp = "<p class='p'>" + arr[i] + "</p><br>";
                 arr[i] = temp;
             }
             str = arr.join("");

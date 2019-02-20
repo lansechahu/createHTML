@@ -1,8 +1,8 @@
 * {
   padding: 0;
   margin: 0;
-  /*transition: all 1s linear;
-  -webkit-transition: all 1s linear;*/
+  transition: all .3s linear;
+  -webkit-transition: all .3s linear;
 }
 
 html,
@@ -21,6 +21,49 @@ th {
   border: 0
 }
 
+:root {
+  --whiteFont: #ffffff;
+  --blackFont: #000000;
+  --greenBg: #6E8337;
+  --chengBg: #F6BA42;
+  --blueBg: #A4C9FF;
+}
+
+@mixin headerStyle() {
+  color: var(--whiteFont);
+  background: var(--greenBg);
+  [data-theme="theme1"] & {
+    color: var(--whiteFont);
+    background: var(--greenBg);
+  }
+  [data-theme="theme2"] & {
+    color: var(--blackFont);
+    background: var(--chengBg);
+  }
+  [data-theme="theme3"] & {
+    color: var(--blackFont);
+    background: var(--blueBg);
+  }
+}
+
+@mixin btnStyle() {
+  border: 1px solid #cccccc;
+  color: var(--whiteFont);
+  background: var(--greenBg);
+  [data-theme="theme1"] & {
+    color: var(--whiteFont);
+    background: var(--greenBg);
+  }
+  [data-theme="theme2"] & {
+    color: var(--blackFont);
+    background: var(--chengBg);
+  }
+  [data-theme="theme3"] & {
+    color: var(--blackFont);
+    background: var(--blueBg);
+  }
+}
+
 .clear {
   clear: both;
 }
@@ -30,8 +73,26 @@ th {
   /*width: 100%;
   height: 5%;*/
   padding: 20px;
-  color: #ffffff;
-  background: #6E8337;
+  display: flex;
+  justify-content: space-between;
+  @include headerStyle();
+
+  //换肤框
+  #skinBox{
+    display: flex;
+    justify-content: space-around;
+
+    button{
+      width: 20px;
+      height: 20px;
+      border: none;
+      margin-right: 10px;
+    }
+  }
+
+  .select_skin{
+    border: 1px solid #cccccc !important;
+  }
 }
 
 //==========================================主体=========================//
@@ -93,6 +154,7 @@ th {
 #copyTitleBtn {
   width: 100px;
   height: 40px;
+  @include btnStyle();
 }
 
 //编辑面板
@@ -114,10 +176,12 @@ th {
     border-right: 1px solid #cccccc;
 
     .btn {
+      padding: 5px;
       width: 70px;
       min-height: 30px;
       height: auto;
       margin-bottom: 20px;
+      @include btnStyle();
     }
   }
 
@@ -161,6 +225,7 @@ th {
     button {
       width: 100%;
       height: 30px;
+      @include btnStyle();
     }
   }
 }
