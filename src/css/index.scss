@@ -78,11 +78,11 @@ th {
   @include headerStyle();
 
   //换肤框
-  #skinBox{
+  #skinBox {
     display: flex;
     justify-content: space-around;
 
-    button{
+    button {
       width: 20px;
       height: 20px;
       border: none;
@@ -90,7 +90,7 @@ th {
     }
   }
 
-  .select_skin{
+  .select_skin {
     border: 1px solid #cccccc !important;
   }
 }
@@ -219,6 +219,45 @@ th {
 
   }
 
+  //图片组件
+  .picBox {
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .pic-sub {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .pic_src {
+      width: 81%;
+      margin-left: 20px;
+      border: 1px solid #000000;
+    }
+
+    .my-img {
+      width: 100px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      margin-left: 45px;
+      @include btnStyle();
+    }
+
+    .img-upload {
+      display: none;
+    }
+
+    .img-area {
+      overflow-x: scroll;
+      /*word-wrap: break-word;
+      word-break: normal;*/
+    }
+  }
+
   .btnBox {
     width: 20%;
 
@@ -295,3 +334,20 @@ th {
   overflow-y: scroll;
 }
 
+/*===============================蒙版===================================*/
+#popBox {
+  position: fixed;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+
+  #pop_msg{
+    font-size: 24px;
+    color: #ffffff;
+  }
+}

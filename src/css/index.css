@@ -174,6 +174,43 @@ th {
       justify-content: space-between; }
     .area-box .videoBox p {
       font-size: 12px; }
+  .area-box .picBox {
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; }
+    .area-box .picBox .pic-sub {
+      display: flex;
+      justify-content: space-between; }
+    .area-box .picBox .pic_src {
+      width: 81%;
+      margin-left: 20px;
+      border: 1px solid #000000; }
+    .area-box .picBox .my-img {
+      width: 100px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      margin-left: 45px;
+      border: 1px solid #cccccc;
+      color: var(--whiteFont);
+      background: var(--greenBg); }
+      [data-theme="theme1"] .area-box .picBox .my-img {
+        color: var(--whiteFont);
+        background: var(--greenBg); }
+      [data-theme="theme2"] .area-box .picBox .my-img {
+        color: var(--blackFont);
+        background: var(--chengBg); }
+      [data-theme="theme3"] .area-box .picBox .my-img {
+        color: var(--blackFont);
+        background: var(--blueBg); }
+    .area-box .picBox .img-upload {
+      display: none; }
+    .area-box .picBox .img-area {
+      overflow-x: scroll;
+      /*word-wrap: break-word;
+      word-break: normal;*/ }
   .area-box .btnBox {
     width: 20%; }
     .area-box .btnBox button {
@@ -245,5 +282,20 @@ th {
   word-wrap: break-word;
   word-break: normal;
   overflow-y: scroll; }
+
+/*===============================蒙版===================================*/
+#popBox {
+  position: fixed;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); }
+  #popBox #pop_msg {
+    font-size: 24px;
+    color: #ffffff; }
 
 /*# sourceMappingURL=index.css.map */

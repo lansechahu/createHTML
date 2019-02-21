@@ -29,16 +29,35 @@
             <!--编辑面板-->
             <div id="panel-body">
                 <div id="toolBar">
-                    <button class="btn" onclick="addTitle()">大标题</button>
-                    <button class="btn" onclick="addDot()">弹点内容</button>
-                    <button class="btn" onclick="addStrong()">粗体段落</button>
-                    <button class="btn" onclick="addContent()">正文段落</button>
-                    <button class="btn" onclick="addCuTxt()">加粗选中的文字</button>
-                    <button class="btn" onclick="addLink()">给选中的文字加链接</button>
-                    <button class="btn" onclick="addVideo()">加入视频</button>
+                    <div style="width: 70px;">
+                        <button class="btn" onclick="addTitle()">大标题</button>
+                        <button class="btn" onclick="addDot()">弹点内容</button>
+                        <button class="btn" onclick="addStrong()">粗体段落</button>
+                        <button class="btn" onclick="addContent()">正文段落</button>
+                        <button class="btn" onclick="addPic()">加入图片</button>
+                        <button class="btn" onclick="addCuTxt()">加粗选中的文字</button>
+                        <button class="btn" onclick="addLink()">给选中的文字加链接</button>
+                        <button class="btn" onclick="addVideo()">加入视频</button>
+                    </div>
                 </div>
 
                 <div id="edit-area">
+                    <!--<div class="area-box" data-type="pic">
+                        <div class="picBox">
+                            <div class="pic-sub">
+                                <div class="area_title">图片地址:</div>
+                                <div class="img-area" style="border: 1px solid #000000;"></div>
+                            </div>
+                            <button onclick="uploadPicClick(this)" class="my-img">上传图片</button>
+                            <input type="file" accept="image/*" class="img-upload" onchange="uploadPic(this)"></input>
+                        </div>
+                        <div class="btnBox">
+                            <button class="delBtn" onclick="delItem(this)">删除</button>
+                            <button class="moveBtn" onclick="moveUp(this)">上移</button>
+                            <button class="moveBtn" onclick="moveDown(this)">下移</button>
+                        </div>
+                    </div>-->
+
                     <!--<div class="area-box" data-type="video">
                         <div class="videoBox">
                             <div class="video-sub">
@@ -96,5 +115,11 @@
         <div id="panel-show"></div>
     </div>
 </div>
+
+<div id="popBox">
+    <div id="pop_msg"></div>
+</div>
+
+
 </body>
 </html>

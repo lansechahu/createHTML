@@ -10,7 +10,7 @@ let strUtil = new ChcUtils.StringUtil();
 initBtn();
 
 //换肤
-window.setSkin = function (theme,__this) {
+window.setSkin = function (theme, __this) {
     $(__this).addClass('select_skin').siblings().removeClass('select_skin');
     window.document.documentElement.setAttribute('data-theme', theme);
 }
@@ -82,6 +82,15 @@ window.addContent = function () {
 //添加视频组件
 window.addVideo = function () {
     let content = '<div class="area-box" data-type="video"><div class="videoBox"><div class="video-sub"><div class="area_title">视频链接:</div><textarea class="video-area" placeholder="视频链接"></textarea></div><div class="video-sub"><div class="area_title">封面图:</div><textarea class="img-area" placeholder="封面图链接"></textarea></div></div><div class="btnBox"><button class="delBtn" onclick="delItem(this)">删除</button><button class="moveBtn" onclick="moveUp(this)">上移</button><button class="moveBtn" onclick="moveDown(this)">下移</button></div></div>';
+    $('#edit-area').append(content);
+}
+
+//添加图片组件
+window.addPic = function () {
+    showTimePop('正在装修中', 2);
+    return;
+
+    let content = '<div class="area-box" data-type="pic"><div class="picBox"><div class="pic-sub"><div class="area_title">图片地址:</div><div class="img-area" style="border: 1px solid #000000;"></div></div><button onclick="uploadPicClick(this)" class="my-img">上传图片</button><input type="file" accept="image/*" class="img-upload" onchange="uploadPic(this)"></input></div><div class="btnBox"><button class="delBtn" onclick="delItem(this)">删除</button><button class="moveBtn" onclick="moveUp(this)">上移</button><button class="moveBtn" onclick="moveDown(this)">下移</button></div></div>';
     $('#edit-area').append(content);
 }
 
@@ -157,6 +166,51 @@ window.moveDown = function (e) {
     $(next).after($(box));
 }
 
+//上传图片按钮
+window.uploadPicClick = function (e) {
+    let imgUpload = $(e).siblings('.img-upload');
+    console.log(imgUpload);
+    $(imgUpload).click();
+}
+
+//上传图片
+window.uploadPic = function (event) {
+    if ($(event).val() == undefined) return;
+    let me = $(event); //本身节点
+    //console.log($(event).val());
+    //console.log(event.files['0']);
+
+    /*let img_area = $(me).siblings('.pic-sub').children('.img-area');
+    $(img_area).html('https://www.gamersky.com/showimage/id_gamersky.shtml?http://img1.gamersky.com/image2018/10/20181015_my_227_3/image007.jpg');*/
+
+    var fd = new FormData();
+    fd.append("upload", 1);
+    fd.append("upfile", event.files['0']);
+
+    showPop('图片上传中。。。'); //上传图片蒙版
+    uploadImg(fd, function (result) {
+        console.log(result);
+        if (result.code == 2000) {
+            let img_area = $(me).siblings('.pic-sub').children('.img-area');
+            $(img_area).html(result.url);
+        }
+        hidePop(); //关闭提示蒙版
+    });
+}
+
+function uploadImg(__img, __callback) {
+    $.ajax({
+        url: "/data/all.json",
+        type: "POST",
+        processData: false,
+        contentType: false,
+        data: __img,
+        success: function (result) {
+            __callback(result);
+        }
+    });
+}
+
 
 //转换
 function zhuanhuan() {
@@ -168,6 +222,9 @@ function zhuanhuan() {
     for (let i = 0; i < box.length; i++) {
         if ($(box[i]).data("type") == 'video') {
             tempStr = getVideo($(box[i]));
+            codeHTML += tempStr;
+        } else if ($(box[i]).data("type") == 'pic') {
+            tempStr = getPic($(box[i]));
             codeHTML += tempStr;
         } else {
             let temp = $(box[i]).children('.txt-area');
@@ -187,6 +244,22 @@ function zhuanhuan() {
     //显示最终效果
     document.getElementById('final-content').innerHTML = codeHTML;
     $('#final-content').show();
+
+    //转换完成提示
+    showTimePop('转换完成', 2);
+}
+
+//生成图片代码
+function getPic(__box) {
+    let picBox = $(__box).children('.picBox');
+    let picSub = $(picBox).children('.pic-sub');
+    let picLink = $(picSub[0]).children('.img-area').html().toString();
+    if (picLink == '') {
+        alert('请选择上传图片');
+        return;
+    }
+    let str = '<img src=' + picLink + ' />';
+    return str;
 }
 
 //生成视频代码
@@ -229,14 +302,14 @@ function getStr(__type, __val) {
                 let temp = "<p>·<strong>" + arr[i] + "</strong></p>";
                 arr[i] = temp;
             }
-            str = arr.join("") + "<br>";
+            str = arr.join("") + "";
             break;
         case '粗体段落':
             __val = strUtil.strReplace(__val, '·', '▪');
             arr = __val.split('\n');
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] == "") continue;
-                let temp = "<p class='p'><strong>" + arr[i] + "</strong></p><br>";
+                let temp = "<p class='p'><strong>" + arr[i] + "</strong></p>";
                 arr[i] = temp;
             }
             str = arr.join("");
@@ -247,7 +320,7 @@ function getStr(__type, __val) {
             arr = __val.split('\n');
             for (let i = 0; i < arr.length; i++) {
                 if (arr[i] == "") continue;
-                let temp = "<p class='p'>" + arr[i] + "</p><br>";
+                let temp = "<p class='p'>" + arr[i] + "</p>";
                 arr[i] = temp;
             }
             str = arr.join("");
@@ -259,6 +332,37 @@ function getStr(__type, __val) {
     str = strUtil.strReplace(str, "--Strong::", "<strong>", "g");
     str = strUtil.strReplace(str, "::Strong--", "</strong>", "g");
     //加换行符
-    let str4 = strUtil.strReplace(str, "\n", "<br>", "g");
+    let str4 = strUtil.strReplace(str, "\n", "", "g");
     return str4;
+}
+
+//关闭蒙版
+function hidePop() {
+    $('#popBox').hide();
+    if (timer) {
+        clearInterval(timer);
+        timer = null;
+    }
+}
+
+//只显示的蒙版
+function showPop(__msg) {
+    $('#pop_msg').html(__msg);
+    $('#popBox').css('display', 'flex');
+}
+
+//倒计时蒙版
+let timer;
+
+function showTimePop(__msg, __num) {
+    let num = __num || 3;
+    $('#pop_msg').html(__msg + ' ' + num);
+    $('#popBox').css('display', 'flex');
+    timer = setInterval(function () {
+        num--;
+        $('#pop_msg').html(__msg + ' ' + num);
+        if (num <= 0) {
+            hidePop();
+        }
+    }, 1000);
 }
