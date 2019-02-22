@@ -87,8 +87,8 @@ window.addVideo = function () {
 
 //添加图片组件
 window.addPic = function () {
-    showTimePop('正在装修中', 2);
-    return;
+    /*showTimePop('正在装修中', 2);
+    return;*/
 
     let content = '<div class="area-box" data-type="pic"><div class="picBox"><div class="pic-sub"><div class="area_title">图片地址:</div><div class="img-area" style="border: 1px solid #000000;"></div></div><button onclick="uploadPicClick(this)" class="my-img">上传图片</button><input type="file" accept="image/*" class="img-upload" onchange="uploadPic(this)"></input></div><div class="btnBox"><button class="delBtn" onclick="delItem(this)">删除</button><button class="moveBtn" onclick="moveUp(this)">上移</button><button class="moveBtn" onclick="moveDown(this)">下移</button></div></div>';
     $('#edit-area').append(content);
@@ -189,8 +189,8 @@ window.uploadPic = function (event) {
 
     showPop('图片上传中。。。'); //上传图片蒙版
     uploadImg(fd, function (result) {
-        console.log(result);
-        if (result.code == 2000) {
+        console.log(typeof result.code);
+        if (result.code == "2000") {
             let img_area = $(me).siblings('.pic-sub').children('.img-area');
             $(img_area).html(result.url);
         }
@@ -199,16 +199,34 @@ window.uploadPic = function (event) {
 }
 
 function uploadImg(__img, __callback) {
-    $.ajax({
-        url: "/data/all.json",
+    /*$.ajax({
+        url: "http://localhost:3000/profile",
         type: "POST",
+        dataType:"json",
         processData: false,
         contentType: false,
-        data: __img,
+        //data: __img,
+        data:{
+            "abc":"123"
+        },
         success: function (result) {
             __callback(result);
         }
-    });
+    });*/
+
+    $.ajax({
+        type: "POST",
+        //url: "/api/getIndustry",
+        url: "http://localhost:3000/posts",
+        data: {
+            "code":2000,
+            "url":"https://www.gamersky.com/showimage/id_gamersky.shtml?http://img1.gamersky.com/image2018/10/20181015_my_227_3/image007.jpg"
+        },
+        dataType: "JSON",
+        success: function (result) {
+            __callback(result);
+        }
+    })
 }
 
 

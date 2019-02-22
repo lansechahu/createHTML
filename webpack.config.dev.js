@@ -15,8 +15,12 @@ module.exports = {
     devtool: "inline-source-map",
     devServer: {
         contentBase: './build',
-        disableHostCheck: true
+        disableHostCheck: true,
+        /*proxy: {
+            '/api': 'http://havi.msldigital.cn/index/index'
+        }*/
     },
+
     plugins: [
         //new UglifyJSPlugin(),
         new CleanWebpackPlugin(['build/js', 'build/index.html']),
