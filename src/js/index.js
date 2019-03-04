@@ -1,13 +1,39 @@
-import '../css/index.css';
+//import '../css/index.css';
 import $ from 'jquery';
 import * as ChcUtils from 'chcutils';
 import Clipboard from 'Clipboard';
+
+import Title from './parts/Title';
+import PopContent from './parts/PopContent';
+import Strong from './parts/Strong';
+import Article from './parts/Article';
+import StrongCopy from './parts/StrongCopy';
+import Video from './parts/Video';
+import Link from './parts/Link';
+import Pic from './parts/Pic';
 
 let fm_title = ''; //格式化后的标题
 let codeHTML = ''; //生成的代码
 let strUtil = new ChcUtils.StringUtil();
 
+let titlePart = new Title(); //大标题组件
+let popPart = new PopContent(); //弹点组件
+let strongPart = new Strong(); //粗体段落组件
+let articlePart = new Article(); //正文组件
+let strongCopyPart = new StrongCopy(); //加粗组件
+let videoPart = new Video(); //视频组件
+let linkPart = new Link(); //加链接组件
+let picPart = new Pic(); //图片组件
+
 initBtn();
+
+var layer;
+var element;
+layui.use(['layer', 'upload','element'], function () {
+    layer = layui.layer;
+    element = layui.element;
+});
+
 
 //换肤
 window.setSkin = function (theme, __this) {
@@ -27,12 +53,14 @@ function initBtn() {
 
     //复制成功执行的回调，可选
     clipboardTitle.on('success', function (e) {
-        alert('复制成功');
+        //alert('复制成功');
+        layer.msg('复制成功', {shade: [0.3, '#000000'], shadeClose: true});
     });
 
     //复制失败执行的回调，可选
     clipboardTitle.on('error', function (e) {
-        alert('复制失败');
+        //alert('复制失败');
+        layer.msg('复制失败', {shade: [0.3, '#000000'], shadeClose: true});
     });
 
     //复制内容到剪贴板
@@ -44,110 +72,77 @@ function initBtn() {
 
     //复制成功执行的回调，可选
     clipboard.on('success', function (e) {
-        alert('复制成功');
+        //alert('复制成功');
+        layer.msg('复制成功', {shade: [0.3, '#000000'], shadeClose: true});
     });
 
     //复制失败执行的回调，可选
     clipboard.on('error', function (e) {
-        alert('复制失败');
+        //alert('复制失败');
+        layer.msg('复制失败', {shade: [0.3, '#000000'], shadeClose: true});
     });
 }
 
 
 //添加标题组件
 window.addTitle = function () {
-    let content = '<div class="area-box"><div class="area_title">标题:</div><textarea class="txt-area" placeholder="标题"></textarea><div class="btnBox"><button class="delBtn" onclick="delItem(this)">删除</button><button class="moveBtn" onclick="moveUp(this)">上移</button><button class="moveBtn" onclick="moveDown(this)">下移</button></div></div>';
-    $('#edit-area').append(content);
+    titlePart.add();
 }
 
 //添加弹点内容
 window.addDot = function () {
-    let content = '<div class="area-box"><div class="area_title">弹点:</div><textarea class="txt-area" placeholder="弹点内容"></textarea><div class="btnBox"><button class="delBtn" onclick="delItem(this)">删除</button><button class="moveBtn" onclick="moveUp(this)">上移</button><button class="moveBtn" onclick="moveDown(this)">下移</button></div></div>';
-    $('#edit-area').append(content);
+    popPart.add();
 }
 
 
 //添加粗体文本组件
 window.addStrong = function () {
-    let content = '<div class="area-box"><div class="area_title">粗体文本:</div><textarea class="txt-area" placeholder="粗体段落"></textarea><div class="btnBox"><button class="delBtn" onclick="delItem(this)">删除</button><button class="moveBtn" onclick="moveUp(this)">上移</button><button class="moveBtn" onclick="moveDown(this)">下移</button></div></div>';
-    $('#edit-area').append(content);
+    strongPart.add();
 }
 
 //添加正文段落组件
 window.addContent = function () {
-    let content = '<div class="area-box"><div class="area_title">正文:</div><textarea class="txt-area" placeholder="正文段落" onmouseup="areamouseup(this)"></textarea><div class="btnBox"><button class="delBtn" onclick="delItem(this)">删除</button><button class="moveBtn" onclick="moveUp(this)">上移</button><button class="moveBtn" onclick="moveDown(this)">下移</button></div></div>';
-    $('#edit-area').append(content);
+    articlePart.add();
 }
 
 //添加视频组件
 window.addVideo = function () {
-    let content = '<div class="area-box" data-type="video"><div class="videoBox"><div class="video-sub"><div class="area_title">视频链接:</div><textarea class="video-area" placeholder="视频链接"></textarea></div><div class="video-sub"><div class="area_title">封面图:</div><textarea class="img-area" placeholder="封面图链接"></textarea></div></div><div class="btnBox"><button class="delBtn" onclick="delItem(this)">删除</button><button class="moveBtn" onclick="moveUp(this)">上移</button><button class="moveBtn" onclick="moveDown(this)">下移</button></div></div>';
-    $('#edit-area').append(content);
+    videoPart.add();
 }
 
 //添加图片组件
 window.addPic = function () {
     /*showTimePop('正在装修中', 2);
     return;*/
-
-    let content = '<div class="area-box" data-type="pic"><div class="picBox"><div class="pic-sub"><div class="area_title">图片地址:</div><div class="img-area" style="border: 1px solid #000000;"></div></div><button onclick="uploadPicClick(this)" class="my-img">上传图片</button><input type="file" accept="image/*" class="img-upload" onchange="uploadPic(this)"></input></div><div class="btnBox"><button class="delBtn" onclick="delItem(this)">删除</button><button class="moveBtn" onclick="moveUp(this)">上移</button><button class="moveBtn" onclick="moveDown(this)">下移</button></div></div>';
-    $('#edit-area').append(content);
+    picPart.add();
 }
 
-//文本域鼠标抬起事件
-let start = null;
-let end = null;
-let thisArea = null;
-window.areamouseup = function (__this) {
-    let id = $(__this);
-    start = id[0].selectionStart;
-    end = id[0].selectionEnd;
-    thisArea = id;
-    if (start == end) {
-        start = null;
-        end = null;
-        thisArea = null;
-    }
-}
 
 //给选中的文字加链接
 window.addLink = function () {
-    if (thisArea == null) return;
-    let link = prompt("请输入链接", "在这填写链接地址");
-    if (link) {
-        let initTxt = thisArea.val();
-        let s_txt = initTxt.substring(start, end);
-        let new_txt = strUtil.del_flg(initTxt, start + 1, (end - start));
-        let insert_txt = "<a href=" + link + ">" + s_txt + "</a>";
-        new_txt = strUtil.insert_flg(new_txt, insert_txt, start);
-        thisArea.val(new_txt);
-    }
+    let obj = articlePart.getSelect();
+    linkPart.addLink(obj);
 }
 
 //添加加粗选中文本组件
 window.addCuTxt = function () {
-    if (thisArea == null) return;
-
-    let initTxt = thisArea.val();
-    let s_txt = initTxt.substring(start, end);
-    let new_txt = strUtil.del_flg(initTxt, start + 1, (end - start));
-    let insert_txt = "--Strong::" + s_txt + "::Strong--";
-    new_txt = strUtil.insert_flg(new_txt, insert_txt, start);
-    thisArea.val(new_txt);
+    let obj = articlePart.getSelect();
+    strongCopyPart.addStrong(obj);
 }
 
 //删除该组件
 window.delItem = function (e) {
-    let box = $(e).parent().parent();
+    let box = $(e).parent().parent().parent();
     box.remove();
 }
 
 //上移
 window.moveUp = function (e) {
-    let box = $(e).parent().parent(); //本身节点
+    let box = $(e).parent().parent().parent(); //本身节点
     let prev = $(box).prev(); //上一个兄弟节点
     if (prev.length <= 0) {
-        alert('已是最上面了');
+        //alert('已是最上面了');
+        layer.msg('已是最上面了', {shade: [0.3, '#000000'], shadeClose: true});
         return;
     }
 
@@ -156,77 +151,15 @@ window.moveUp = function (e) {
 
 //下移
 window.moveDown = function (e) {
-    let box = $(e).parent().parent(); //本身节点
+    let box = $(e).parent().parent().parent(); //本身节点
     let next = $(box).next(); //下一个兄弟节点
     if (next.length <= 0) {
-        alert('已是最下面了');
+        //alert('已是最下面了');
+        layer.msg('已是最下面了', {shade: [0.3, '#000000'], shadeClose: true});
         return;
     }
 
     $(next).after($(box));
-}
-
-//上传图片按钮
-window.uploadPicClick = function (e) {
-    let imgUpload = $(e).siblings('.img-upload');
-    console.log(imgUpload);
-    $(imgUpload).click();
-}
-
-//上传图片
-window.uploadPic = function (event) {
-    if ($(event).val() == undefined) return;
-    let me = $(event); //本身节点
-    //console.log($(event).val());
-    //console.log(event.files['0']);
-
-    /*let img_area = $(me).siblings('.pic-sub').children('.img-area');
-    $(img_area).html('https://www.gamersky.com/showimage/id_gamersky.shtml?http://img1.gamersky.com/image2018/10/20181015_my_227_3/image007.jpg');*/
-
-    var fd = new FormData();
-    fd.append("upload", 1);
-    fd.append("upfile", event.files['0']);
-
-    showPop('图片上传中。。。'); //上传图片蒙版
-    uploadImg(fd, function (result) {
-        console.log(typeof result.code);
-        if (result.code == "2000") {
-            let img_area = $(me).siblings('.pic-sub').children('.img-area');
-            $(img_area).html(result.url);
-        }
-        hidePop(); //关闭提示蒙版
-    });
-}
-
-function uploadImg(__img, __callback) {
-    /*$.ajax({
-        url: "http://localhost:3000/profile",
-        type: "POST",
-        dataType:"json",
-        processData: false,
-        contentType: false,
-        //data: __img,
-        data:{
-            "abc":"123"
-        },
-        success: function (result) {
-            __callback(result);
-        }
-    });*/
-
-    $.ajax({
-        type: "POST",
-        //url: "/api/getIndustry",
-        url: "http://localhost:3000/posts",
-        data: {
-            "code":2000,
-            "url":"https://www.gamersky.com/showimage/id_gamersky.shtml?http://img1.gamersky.com/image2018/10/20181015_my_227_3/image007.jpg"
-        },
-        dataType: "JSON",
-        success: function (result) {
-            __callback(result);
-        }
-    })
 }
 
 
@@ -239,13 +172,13 @@ function zhuanhuan() {
 
     for (let i = 0; i < box.length; i++) {
         if ($(box[i]).data("type") == 'video') {
-            tempStr = getVideo($(box[i]));
+            tempStr = videoPart.getVideo($(box[i]));
             codeHTML += tempStr;
         } else if ($(box[i]).data("type") == 'pic') {
-            tempStr = getPic($(box[i]));
+            tempStr = picPart.getPic($(box[i]));
             codeHTML += tempStr;
         } else {
-            let temp = $(box[i]).children('.txt-area');
+            let temp = $(box[i]).children('.layui-colla-content').children('.txt-area');
             let type = $(temp).attr('placeholder');
             tempStr = getStr(type, $(temp).val());
             codeHTML += tempStr;
@@ -268,94 +201,49 @@ function zhuanhuan() {
 }
 
 //生成图片代码
-function getPic(__box) {
+/*function getPic(__box) {
     let picBox = $(__box).children('.picBox');
     let picSub = $(picBox).children('.pic-sub');
     let picLink = $(picSub[0]).children('.img-area').html().toString();
     if (picLink == '') {
-        alert('请选择上传图片');
+        //alert('请选择上传图片');
+        layer.msg('请选择上传图片', {shade: [0.3, '#000000'], shadeClose: true});
         return;
     }
     let str = '<img src=' + picLink + ' />';
     return str;
-}
-
-//生成视频代码
-function getVideo(__box) {
-    let videoBox = $(__box).children('.videoBox');
-    let videoSub = $(videoBox).children('.video-sub');
-    let videoLink = $(videoSub[0]).children('.video-area').val().toString();
-    let imgLink = $(videoSub[1]).children('.img-area').val().toString();
-    if (videoLink == "") {
-        alert('请输入视频地址');
-        return "";
-    }
-    if (imgLink == "") {
-        alert('请输入视频封面');
-        return "";
-    }
-    let str = '<p><video src=' + videoLink + ' poster=' + imgLink + '>您的浏览器不支持 video 标签。</video></p>';
-    let str2 = '<p style="text-align: center;"><span style="color: rgb(216, 216, 216);">建议在WiFi环境下观看</span></p><br>';
-    str += str2;
-
-    return str;
-}
+}*/
 
 //根据类型生成代码
 function getStr(__type, __val) {
-    let title = 'font-weight: bold;margin: 0 auto;text-align:center';
-
     let str = "";
     let arr = [];
     switch (__type) {
         case '标题':
-            fm_title = strUtil.strReplace(__val, '•', '·');
+            fm_title = titlePart.formate(__val);
             return "";
             break;
         case '弹点内容':
-            __val = strUtil.trim(__val, 4);
-            arr = __val.split('\n');
-            for (let i = 0; i < arr.length; i++) {
-                arr[i] = strUtil.strReplace(arr[i], '•\t', ''); //清除制表符
-                let temp = "<p>·<strong>" + arr[i] + "</strong></p>";
-                arr[i] = temp;
-            }
-            str = arr.join("") + "";
+            str = popPart.formate(__val);
             break;
         case '粗体段落':
-            __val = strUtil.strReplace(__val, '·', '▪');
-            arr = __val.split('\n');
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i] == "") continue;
-                let temp = "<p class='p'><strong>" + arr[i] + "</strong></p>";
-                arr[i] = temp;
-            }
-            str = arr.join("");
-            //str = "<p><strong>" + __val + "</strong></p><br>";
+            str = strongPart.formate(__val);
             break;
         case '正文段落':
-            __val = strUtil.strReplace(__val, '·', '▪');
-            arr = __val.split('\n');
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i] == "") continue;
-                let temp = "<p class='p'>" + arr[i] + "</p>";
-                arr[i] = temp;
-            }
-            str = arr.join("");
-            //str = "<p>" + __val + "</p><br>";
+            str = articlePart.formate(__val);
             break;
     }
 
     //加粗字体
-    str = strUtil.strReplace(str, "--Strong::", "<strong>", "g");
-    str = strUtil.strReplace(str, "::Strong--", "</strong>", "g");
+    /*str = strUtil.strReplace(str, "--Strong::", "<strong>", "g");
+    str = strUtil.strReplace(str, "::Strong--", "</strong>", "g");*/
     //加换行符
     let str4 = strUtil.strReplace(str, "\n", "", "g");
     return str4;
 }
 
 //关闭蒙版
-function hidePop() {
+window.hidePop = function () {
     $('#popBox').hide();
     if (timer) {
         clearInterval(timer);
@@ -364,16 +252,18 @@ function hidePop() {
 }
 
 //只显示的蒙版
-function showPop(__msg) {
-    $('#pop_msg').html(__msg);
-    $('#popBox').css('display', 'flex');
+window.showPop = function (__msg) {
+    layer.msg(__msg, {shade: [0.3, '#000000'], shadeClose: true});
+    /*$('#pop_msg').html(__msg);
+    $('#popBox').css('display', 'flex');*/
 }
 
 //倒计时蒙版
 let timer;
 
-function showTimePop(__msg, __num) {
-    let num = __num || 3;
+window.showTimePop = function (__msg, __num) {
+    layer.msg(__msg, {icon: 6, time: __num * 1000, shade: [0.3, '#000000'], shadeClose: true});
+    /*let num = __num || 3;
     $('#pop_msg').html(__msg + ' ' + num);
     $('#popBox').css('display', 'flex');
     timer = setInterval(function () {
@@ -382,5 +272,5 @@ function showTimePop(__msg, __num) {
         if (num <= 0) {
             hidePop();
         }
-    }, 1000);
+    }, 1000);*/
 }

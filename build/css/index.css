@@ -2,8 +2,8 @@
 * {
   padding: 0;
   margin: 0;
-  transition: all .3s linear;
-  -webkit-transition: all .3s linear; }
+  /*transition: all .3s linear;
+  -webkit-transition: all .3s linear;*/ }
 
 html,
 body {
@@ -102,23 +102,11 @@ th {
   word-wrap: break-word;
   word-break: normal; }
 
-#zhuanBtn, #copyBtn, #copyTitleBtn {
+#zhuanBtn,
+#copyBtn,
+#copyTitleBtn {
   width: 100px;
-  height: 40px;
-  border: 1px solid #cccccc;
-  color: var(--whiteFont);
-  background: var(--greenBg); }
-  [data-theme="theme1"] #zhuanBtn,
-  [data-theme="theme1"] #copyBtn,
-  [data-theme="theme1"] #copyTitleBtn {
-    color: var(--whiteFont);
-    background: var(--greenBg); }
-  [data-theme="theme2"] #zhuanBtn, [data-theme="theme2"] #copyBtn, [data-theme="theme2"] #copyTitleBtn {
-    color: var(--blackFont);
-    background: var(--chengBg); }
-  [data-theme="theme3"] #zhuanBtn, [data-theme="theme3"] #copyBtn, [data-theme="theme3"] #copyTitleBtn {
-    color: var(--blackFont);
-    background: var(--blueBg); }
+  height: 40px; }
 
 #panel-body {
   display: flex;
@@ -137,36 +125,28 @@ th {
     #panel-body #toolBar .btn {
       padding: 5px;
       width: 70px;
-      min-height: 30px;
+      min-height: 50px;
       height: auto;
+      line-height: normal;
       margin-bottom: 20px;
-      border: 1px solid #cccccc;
-      color: var(--whiteFont);
-      background: var(--greenBg); }
-      [data-theme="theme1"] #panel-body #toolBar .btn {
-        color: var(--whiteFont);
-        background: var(--greenBg); }
-      [data-theme="theme2"] #panel-body #toolBar .btn {
-        color: var(--blackFont);
-        background: var(--chengBg); }
-      [data-theme="theme3"] #panel-body #toolBar .btn {
-        color: var(--blackFont);
-        background: var(--blueBg); }
+      white-space: normal;
+      word-break: break-all;
+      word-wrap: break-word; }
   #panel-body #edit-area {
     width: 85%;
     height: 100%;
     overflow-y: scroll; }
 
 .area-box {
-  padding: 10px;
+  /*padding: 10px;
   padding-top: 0px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between; }
+  margin-bottom: 10px;*/
+  /*display: flex;
+  justify-content: space-between;*/ }
   .area-box .videoBox {
     width: 80%;
-    height: auto;
-    display: flex;
+    height: 110px;
+    display: inline-flex;
     flex-direction: column;
     justify-content: space-between; }
     .area-box .videoBox .video-sub {
@@ -177,7 +157,7 @@ th {
   .area-box .picBox {
     width: 80%;
     height: auto;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: space-between; }
     .area-box .picBox .pic-sub {
@@ -188,57 +168,38 @@ th {
       margin-left: 20px;
       border: 1px solid #000000; }
     .area-box .picBox .my-img {
-      width: 100px;
-      height: 30px;
+      width: 120px;
       text-align: center;
       line-height: 30px;
-      margin-left: 45px;
-      border: 1px solid #cccccc;
-      color: var(--whiteFont);
-      background: var(--greenBg); }
-      [data-theme="theme1"] .area-box .picBox .my-img {
-        color: var(--whiteFont);
-        background: var(--greenBg); }
-      [data-theme="theme2"] .area-box .picBox .my-img {
-        color: var(--blackFont);
-        background: var(--chengBg); }
-      [data-theme="theme3"] .area-box .picBox .my-img {
-        color: var(--blackFont);
-        background: var(--blueBg); }
+      margin-top: 20px; }
     .area-box .picBox .img-upload {
       display: none; }
     .area-box .picBox .img-area {
       overflow-x: scroll;
       /*word-wrap: break-word;
       word-break: normal;*/ }
-  .area-box .btnBox {
-    width: 20%; }
-    .area-box .btnBox button {
-      width: 100%;
-      height: 30px;
-      border: 1px solid #cccccc;
-      color: var(--whiteFont);
-      background: var(--greenBg); }
-      [data-theme="theme1"] .area-box .btnBox button {
-        color: var(--whiteFont);
-        background: var(--greenBg); }
-      [data-theme="theme2"] .area-box .btnBox button {
-        color: var(--blackFont);
-        background: var(--chengBg); }
-      [data-theme="theme3"] .area-box .btnBox button {
-        color: var(--blackFont);
-        background: var(--blueBg); }
+
+.btnBox {
+  width: 20%;
+  float: right; }
+  .btnBox button {
+    width: 100%;
+    height: auto; }
+  .btnBox .layui-btn {
+    border-top: 1px solid rgba(255, 255, 255, 0.5); }
+  .btnBox .layui-btn:first-child {
+    border-top: none; }
 
 .txt-area,
 .video-area,
 .img-area {
-  width: 65%;
-  height: auto; }
+  width: 75%;
+  height: 110px; }
 
 .video-area,
 .img-area {
   height: auto;
-  width: 81%;
+  width: 95%;
   margin-right: 15px; }
 
 /*===============================右边=========================*/
