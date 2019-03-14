@@ -15,16 +15,24 @@ export default class PopContent {
         element.init('collapse');
     }
 
-    formate(__val){
+    formate(__val) {
         let strUtil = new ChcUtils.StringUtil();
 
-        let arr=[];
+        let arr = [];
         __val = strUtil.trim(__val, 4);
+        /*__val = strUtil.strReplace(__val, '·', '▪');
+        __val = strUtil.strReplace(__val, '•', '▪');*/
         arr = __val.split('\n');
         for (let i = 0; i < arr.length; i++) {
+            //arr[i] = strUtil.strReplace(arr[i], '·', '▪');
             arr[i] = strUtil.strReplace(arr[i], '•\t', ''); //清除制表符
+
+            arr[i] = strUtil.strReplace(arr[i], '·', '▪');
+            arr[i] = strUtil.strReplace(arr[i], '•', '▪');
+
             let temp = "<p>·<strong>" + arr[i] + "</strong></p>";
             arr[i] = temp;
+
         }
         let str = arr.join("") + "";
 

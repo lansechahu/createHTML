@@ -20,6 +20,7 @@ export default class Article {
 
         let arr = [];
         __val = strUtil.strReplace(__val, '·', '▪');
+        __val = strUtil.strReplace(__val, '•', '▪');
         arr = __val.split('\n');
         for (let i = 0; i < arr.length; i++) {
             if (arr[i] == "") continue;
