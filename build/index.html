@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <title>奥迪企业号新闻简易编辑器</title>
+    <link type="text/css" rel="stylesheet" href="css/index.css"/>
+    <link type="text/css" rel="stylesheet" href="css/layui.css"/>
+
+    <script src="layui.js"></script>
+</head>
+<body>
+<div id="headBar">
+    <div>奥迪企业号新闻简易编辑器</div>
+    <div id="skinBox">
+        <button style="background: var(--greenBg);" onclick="setSkin('theme1',this)" class="select_skin"></button>
+        <button style="background: var(--chengBg);" onclick="setSkin('theme2',this)"></button>
+        <button style="background: var(--blueBg);" onclick="setSkin('theme3',this)"></button>
+    </div>
+</div>
+<div id="container">
+    <div class="row">
+        <!--左边-->
+        <div id="left">
+            <!--头部面板-->
+            <div class="headBar">
+                <div class="titleBar">
+                    <div class="title">文章内容编辑：</div>
+                    <button id="zhuanBtn" class="layui-btn layui-btn-normal">转换</button>
+                </div>
+            </div>
+            <!--编辑面板-->
+            <div id="panel-body">
+                <div id="toolBar">
+                    <div style="width: 70px;" class="layui-btn-group">
+                        <button class="btn layui-btn layui-btn-normal" onclick="addTitle()">大标题</button>
+                        <button class="btn layui-btn layui-btn-normal" onclick="addDot()">弹点内容</button>
+                        <button class="btn layui-btn layui-btn-normal" onclick="addStrong()">粗体段落</button>
+                        <button class="btn layui-btn layui-btn-normal" onclick="addContent()">正文段落</button>
+                        <button class="btn layui-btn layui-btn-normal" onclick="addPic()">加入图片</button>
+                        <button class="btn layui-btn layui-btn-normal" onclick="addCuTxt()">加粗选中的文字</button>
+                        <button class="btn layui-btn layui-btn-normal" onclick="addLink()">给选中的文字加链接</button>
+                        <button class="btn layui-btn layui-btn-normal" onclick="addVideo()">加入视频</button>
+                    </div>
+                </div>
+
+                <div id="edit-area" class="layui-collapse">
+                    <!--<div class="area-box layui-colla-item">
+                        <div class="layui-colla-title">标题:</div>
+                        <div class="layui-colla-content layui-show">
+                            <textarea class="txt-area" placeholder="标题"></textarea>
+                            <div class="btnBox layui-btn-group">
+                                <button class="delBtn layui-btn layui-btn-normal" onclick="delItem(this)">删除</button>
+                                <button class="moveBtn layui-btn layui-btn-normal" onclick="moveUp(this)">上移</button>
+                                <button class="moveBtn layui-btn layui-btn-normal" onclick="moveDown(this)">下移</button>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>-->
+
+                    <!--<div class="area-box  layui-colla-item" data-type="pic">
+                        <div class="layui-colla-title">插入图片:</div>
+                        <div class="layui-colla-content layui-show">
+                            <div class="picBox">
+                                <div class="pic-sub">
+                                    <div class="area_title">图片地址:</div>
+                                    <div class="img-area" style="border: 1px solid #000000;"></div>
+                                </div>
+                                <button onclick="uploadPicClick(this)" class="my-img layui-btn layui-btn-normal">上传图片</button>
+                                <input type="file" accept="image/*" class="img-upload" onchange="uploadPic(this)"></input>
+                            </div>
+                            <div class="btnBox layui-btn-group">
+                                <button class="delBtn layui-btn layui-btn-normal" onclick="delItem(this)">删除</button>
+                                <button class="moveBtn layui-btn layui-btn-normal" onclick="moveUp(this)">上移</button>
+                                <button class="moveBtn layui-btn layui-btn-normal" onclick="moveDown(this)">下移</button>
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <!--<div class="area-box  layui-colla-item" data-type="video">
+                        <div class="layui-colla-title">插入视频:</div>
+                        <div class="layui-colla-content layui-show">
+                            <div class="videoBox">
+                                <div class="video-sub">
+                                    <textarea class="video-area" placeholder="视频链接"></textarea>
+                                </div>
+                                <div class="video-sub">
+                                    <textarea class="img-area" placeholder="封面图链接"></textarea>
+                                </div>
+                            </div>
+                            <div class="btnBox layui-btn-group">
+                                <button class="delBtn layui-btn layui-btn-normal" onclick="delItem(this)">删除</button>
+                                <button class="moveBtn layui-btn layui-btn-normal" onclick="moveUp(this)">上移</button>
+                                <button class="moveBtn layui-btn layui-btn-normal" onclick="moveDown(this)">下移</button>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+
+        <!--右边 显示最终效果-->
+        <div id="right">
+            <!--头部面板-->
+            <div class="headBar">
+                <div class="titleBar">
+                    <div class="title">最终效果：</div>
+                </div>
+            </div>
+            <!--显示内容-->
+            <div id="final-content"></div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+
+    <!--显示代码-->
+    <div id="content-show">
+        <!--标题面板-->
+        <div class="headBar">
+            <div class="titleBar">
+                <div class="title">格式化的标题：</div>
+                <div id="formatTitle"></div>
+                <button id="copyTitleBtn" class="layui-btn layui-btn-normal">复制</button>
+            </div>
+        </div>
+        <!--头部面板-->
+        <div class="headBar">
+            <div class="titleBar">
+                <div class="title">生成的HTML代码：</div>
+                <button id="copyBtn" class="layui-btn layui-btn-normal">复制</button>
+            </div>
+        </div>
+        <!--显示面板-->
+        <div id="panel-show"></div>
+    </div>
+</div>
+
+<div id="popBox">
+    <div id="pop_msg"></div>
+</div>
+
+<script>
+    var element;
+    layui.use('element', function () {
+        element = layui.element;
+    });
+</script>
+
+<script type="text/javascript" src="js/main.min.js"></script></body>
+</html>
