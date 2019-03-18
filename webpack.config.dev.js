@@ -5,6 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
+const express = require('express')
+const app = express();
+var appData = require('./build/data/all.json');
+var apiRoutes = express.Router();
+app.use('/api', apiRoutes)
+
 
 module.exports = {
     entry: './src/js/index.js',
@@ -16,6 +22,14 @@ module.exports = {
     devServer: {
         contentBase: './build',
         disableHostCheck: true,
+        before(app){
+            app.get('/api/appData',function(req,res){
+                res.json({
+                    errno:0,
+                    data:appData
+                })
+            })
+        }
         /*proxy: {
             '/api': 'http://havi.msldigital.cn/index/index'
         }*/
